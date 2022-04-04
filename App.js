@@ -8,14 +8,14 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import HomeScreen from './src/HomeScreen';
+import StackNavigator from './src/navigation/StackNavigator';
 
 
 const App = () => {
 
   return (
-    <Text>
-      Hello!!!!!!!
-    </Text>
+    <StackNavigator />
   );
 };
 

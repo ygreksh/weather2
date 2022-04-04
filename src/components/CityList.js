@@ -13,7 +13,6 @@ const CityList = () => {
                         {name: "City 2", country: "C2"},
                         {name: "City 3", country: "C3"},
                     ];
-    console.log(cityList);
     const renderCityItem = ({item}) => 
         <View
             style={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import {}
 import {
   Text,
@@ -12,7 +12,24 @@ import Geolocation from '@react-native-community/geolocation';
 
 
 const HomeScreen = () => {
-    // const navigation = useNavigation();
+    const [myLocation, setMyLocation] = useState({lat: null, lon: null });
+
+    useEffect(() => {
+        const config = {
+            enableHighAccuracy: true,
+            timeout: 2000,
+            maximumAge: 3600000,
+          };
+        Geolocation.getCurrentPosition(
+            info => {
+                console.log("INFO", info);
+                setMyLocation(info.coords);
+            },
+            error => console.log("ERROR", error),
+            config
+            );
+    }, []);
+    // const [myLocation, setMyLocation] = useState({lat: null, lon: null, });
     /* http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d4041d05e889df96025b49745e6711b9 */
     /* {"coord":{"lon":-0.1257,"lat":51.5085},
         "weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04d"}],
@@ -148,16 +165,7 @@ const HomeScreen = () => {
     }
 
     const handleGetLocation = () => {
-        const config = {
-            enableHighAccuracy: true,
-            timeout: 2000,
-            maximumAge: 3600000,
-          };
-        Geolocation.getCurrentPosition(
-            info => console.log("INFO", info),
-            error => console.log("ERROR", error),
-            config
-            );
+        
     }
 
     return (
@@ -176,6 +184,9 @@ const HomeScreen = () => {
                     title='Get Location'
                     onPress={handleGetLocation} 
                 />
+                <Text>
+                    My location (lat={myLocation.latitude}, lon={myLocation.longitude})
+                </Text>
             </View>
   );
 };

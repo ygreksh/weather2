@@ -1,9 +1,9 @@
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from "../HomeScreen";
-import AddCity from "../AddCity";
-// import { Login, Player, Settings, VODItemDetails, ParentalControl, ChannelPlayer } from "../screens";
+// import HomeScreen from "../screens/HomeScreen";
+// import AddCity from "../screens/AddCity";
+import { HomeScreen, AddCity } from "../screens";
 
 
 const Stack = createNativeStackNavigator();

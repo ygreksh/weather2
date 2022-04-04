@@ -8,7 +8,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import HomeScreen from './src/HomeScreen';
+import HomeScreen from './src/screens/HomeScreen';
 import StackNavigator from './src/navigation/StackNavigator';
 
 

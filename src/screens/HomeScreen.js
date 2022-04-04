@@ -5,7 +5,9 @@ import {
   Button,
   View
 } from 'react-native';
-import NavBar from './components/NavBar';
+import CityList from '../components/CityList';
+import NavBar from '../components/NavBar';
+import WeatherList from '../components/WeatherList';
 
 const HomeScreen = ({navigation}) => {
     // const navigation = useNavigation();
@@ -30,6 +32,8 @@ const HomeScreen = ({navigation}) => {
                     Home Screen
                 </Text>
                 <NavBar />
+                <WeatherList />    
+                <CityList />
                 <Button
                     title='Get Location'
                     onPress={handleGetLocation} 

@@ -2,83 +2,61 @@ import React from 'react';
 import {
   Text,
   Button,
-  View
+  View,
+  FlatList,
 } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 
 const CityList = () => {
-
-    return (
+    const cityList = [
+                        {name: "City 1", country: "C1"},
+                        {name: "City 2", country: "C2"},
+                        {name: "City 3", country: "C3"},
+                    ];
+    const renderCityItem = ({item}) => {
         <View
             style={{
                 // flex: 1,
-                // justifyContent: 'center',
-                // alignContent: 'center',
-                // alignItems: 'baseline',
-                // borderWidth: 1,
-                // borderColor: 'blue'
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderWidth: 4,
+                borderRadius: 10,
+                borderColor: 'red',
+                padding: 5,
+                margin: 5,
             }}
         >
-                                <View
+            <Text>
+                {item.name}
+            </Text>
+        </View>
+    };
+    return (
+                <View
+                    style={{
+                        // flex: 1,
+                        // justifyContent: 'center',
+                        // alignContent: 'center',
+                        // alignItems: 'baseline',
+                        // borderWidth: 1,
+                        // borderColor: 'blue'
+                    }}
+                >
+                    <View
                         style={{
-                            // flex: 3,
-                            //  justifyContent: 'center',
+                            // flex: 1,
+                            // justifyContent: 'center',
                             alignItems: 'center',
-                            borderWidth: 1,
+                            borderWidth: 4,
                             borderColor: 'green'
                         }}
                     >
-                        <View
-                            style={{
-                                // flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                borderColor: 'yellow',
-                                padding: 5,
-                                margin: 5,
-                            }}
-                        >
-                            <Text>
-                                City 1
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                // flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                borderColor: 'yellow',
-                                padding: 5,
-                                margin: 5,
-                            }}
-                        >
-                            <Text>
-                                City 2
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                // flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                borderColor: 'yellow',
-                                padding: 5,
-                                margin: 5,
-                            }}
-                        >
-                            <Text>
-                                City 3
-                            </Text>
-                        </View>
+                      <FlatList 
+                        data={cityList}
+                        renderItem={renderCityItem}
+                      />  
                     </View>
-
-        </View>
+                </View>        
   );
 };
 

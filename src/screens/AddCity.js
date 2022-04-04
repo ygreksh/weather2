@@ -24,7 +24,7 @@ const AddCity = () => {
                         setSearchedCityList(json);
                     });
   }
-  const renderSearchedCityList = ({item}) => {
+  const renderSearchedCityList = ({item}) => 
     <View
       style={{
         // flex: 1,
@@ -32,14 +32,15 @@ const AddCity = () => {
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: 'yellow',
+        borderColor: 'grey',
         padding: 5,
         margin: 5,
       }}
     >
+      <Text>
       {item? item.name : ""}, {item? item.country : ""}
+      </Text>
     </View>
-  };
     
     return (
             <View>

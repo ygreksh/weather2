@@ -2,84 +2,73 @@ import React from 'react';
 import {
   Text,
   Button,
-  View
+  View,
+  FlatList,
 } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 
-const WeatherList = () => {
-
+const WeatherItem = ({item}) => {
+    
+    
     return (
         <View
             style={{
-                // flex: 1,
-                // justifyContent: 'center',
-                // alignContent: 'center',
-                // alignItems: 'baseline',
-                // borderWidth: 1,
-                // borderColor: 'blue'
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'space-between',
+                borderWidth: 1,
+                borderRadius: 20,
+                borderColor: 'pink',
+                padding: 5,
+                margin: 10,
             }}
         >
+            <Text>
+                {item.name}
+            </Text>
+        </View>
+    );
+};
+
+const WeatherList = () => {
+
+    const weatherList = [
+        {name: "Weather 1"},
+        {name: "Weather 2"},
+        {name: "Weather 3"},
+    ];
+
+    const renderWeatherItem = ({item}) => <WeatherItem item={item} />
+    
+    return (
             <View
                 style={{
-                    // flex: 2,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // alignContent: 'stretch',
+                    // flex: 1,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    alignContent: 'center',
                     borderWidth: 1,
                     borderColor: 'red',
                     flexDirection: 'row',
                     padding: 10,
                 }}
             >
-                <View
+                <FlatList 
                     style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignContent: 'space-between',
-                        borderWidth: 1,
-                        borderRadius: 20,
-                         borderColor: 'pink',
-                        padding: 5,
-                        margin: 10,
+                        // flex: 1,
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
+                        // alignContent: 'stretch',
+                        // borderWidth: 1,
+                        // borderColor: 'red',
+                        // padding: 10,
                     }}
-                >
-                    <Text>
-                        Weather 1
-                    </Text>
-                </View>
-                <View
-                            style={{
-                                //  justifyContent: 'center',
-                                alignItems: 'center',
-                                borderWidth: 1,
-                                borderRadius: 20,
-                                borderColor: 'pink',
-                                padding: 5,
-                                margin: 10,
-                            }}
-                        >
-                            <Text>
-                                Weather 2
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                //  justifyContent: 'center',
-                                alignItems: 'center',
-                                borderWidth: 1,
-                                borderRadius: 20,
-                                borderColor: 'pink',
-                                padding: 5,
-                                margin: 10,
-                            }}
-                        >
-                            <Text>
-                                Weather 3
-                            </Text>
-                        </View>
-                    </View>
-            
-        </View>
+                    data={weatherList}
+                    renderItem={renderWeatherItem}
+                    horizontal={true}
+                />   
+                
+            </View>
   );
 };
 

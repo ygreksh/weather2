@@ -13,13 +13,14 @@ const CityList = () => {
                         {name: "City 2", country: "C2"},
                         {name: "City 3", country: "C3"},
                     ];
-    const renderCityItem = ({item}) => {
+    console.log(cityList);
+    const renderCityItem = ({item}) => 
         <View
             style={{
                 // flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderWidth: 4,
+                borderWidth: 1,
                 borderRadius: 10,
                 borderColor: 'red',
                 padding: 5,
@@ -30,7 +31,7 @@ const CityList = () => {
                 {item.name}
             </Text>
         </View>
-    };
+    
     return (
                 <View
                     style={{

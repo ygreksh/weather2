@@ -100,20 +100,20 @@ const HomeScreen = () => {
     // const city = "Tiraspol";
     
 
-    const handleGetWeather = () => {
-        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        if(selectedCity) {
-            let url = baseUrl + "?q=" + selectedCity.name + "&appid=" + APIKey;
-            console.log(url);
-            fetch(url)
-            .then(response => response.json())
-            .then(json => {
-                            console.log(json);
-                            setCurrentWeather(json);
-                        });
-        }
+    // const handleGetWeather = () => {
+    //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+    //     if(selectedCity) {
+    //         let url = baseUrl + "?q=" + selectedCity.name + "&appid=" + APIKey;
+    //         console.log(url);
+    //         fetch(url)
+    //         .then(response => response.json())
+    //         .then(json => {
+    //                         console.log(json);
+    //                         setCurrentWeather(json);
+    //                     });
+    //     }
         
-    }
+    // }
 
     const handleGetLocalWeather = () => {
         const config = {
@@ -139,47 +139,48 @@ const HomeScreen = () => {
                 .then(json => {
                                 console.log(json);
                                 setCurrentWeather(json);
+                                setMyCity({name: json.name})
                             });
             }
     }
 
-    const handleGetLocation = () => {
-        const config = {
-            enableHighAccuracy: true,
-            timeout: 2000,
-            maximumAge: 3600000,
-          };
-        Geolocation.getCurrentPosition(
-            info => {
-                console.log("INFO", info);
-                setMyLocation(info.coords);
-            },
-            error => console.log("ERROR", error),
-            config
-            );
+    // const handleGetLocation = () => {
+    //     const config = {
+    //         enableHighAccuracy: true,
+    //         timeout: 2000,
+    //         maximumAge: 3600000,
+    //       };
+    //     Geolocation.getCurrentPosition(
+    //         info => {
+    //             console.log("INFO", info);
+    //             setMyLocation(info.coords);
+    //         },
+    //         error => console.log("ERROR", error),
+    //         config
+    //         );
 
-        if(myLocation.coords) {
-            const baseUrl = "http://api.openweathermap.org/geo/1.0/reverse";
-            const city = "Tiraspol";
-            let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
-            console.log(url);
-            fetch(url)
-            .then(response => response.json())
-            .then(json => {
-                            console.log(json);
-                            if(json[0]) {
-                                console.log(`${json[0].name}, ${json[0].country}`);
-                                setMyCity(json[0]);
-                            }
-                            // setMyCity(json[0]);
-                        })
-            .catch(error => {
-                console.log("ERROR Get my location",error);
-                setMyCity({name: null, country: null});
-            });
-        }
+    //     if(myLocation.coords) {
+    //         const baseUrl = "http://api.openweathermap.org/geo/1.0/reverse";
+    //         const city = "Tiraspol";
+    //         let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
+    //         console.log(url);
+    //         fetch(url)
+    //         .then(response => response.json())
+    //         .then(json => {
+    //                         console.log(json);
+    //                         if(json[0]) {
+    //                             console.log(`${json[0].name}, ${json[0].country}`);
+    //                             setMyCity(json[0]);
+    //                         }
+    //                         // setMyCity(json[0]);
+    //                     })
+    //         .catch(error => {
+    //             console.log("ERROR Get my location",error);
+    //             setMyCity({name: null, country: null});
+    //         });
+    //     }
         
-    }
+    // }
 
     return (
             <View>
@@ -215,7 +216,7 @@ const HomeScreen = () => {
                     title='Get Local Weather'
                     onPress={handleGetLocalWeather} 
                 />
-                <Text
+                {/* <Text
                     style={{fontWeight: 'bold'}}
                 >
                     In {myCity.name}, {myCity.country}
@@ -227,7 +228,7 @@ const HomeScreen = () => {
                 </Text>
                 <Text>
                     My location (lat={myLocation.latitude}, lon={myLocation.longitude})
-                </Text>
+                </Text> */}
                 <Text>
                     My city: {myCity.name}, {myCity.country}.
                 </Text>

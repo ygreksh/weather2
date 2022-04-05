@@ -34,7 +34,7 @@ const WeatherItem = ({item}) => {
                     fontSize: 30
                 }}
             >
-                {selectedCity.name}
+                {currentWeather.name}
             </Text>
             <Image 
                 style={{
@@ -77,7 +77,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         // console.log("myCityList useEffect now:", myCityList.map(item => item.name + ", " + item.country));
-    }, [selectedCity]);
+    }, [currentWeather]);
 
     useEffect(() => {
         const config = {
@@ -116,7 +116,31 @@ const HomeScreen = () => {
     }
 
     const handleGetLocalWeather = () => {
+        const config = {
+            enableHighAccuracy: true,
+            timeout: 2000,
+            maximumAge: 3600000,
+          };
+        Geolocation.getCurrentPosition(
+            info => {
+                console.log("INFO", info);
+                setMyLocation(info.coords);
+            },
+            error => console.log("ERROR", error),
+            config
+            );
 
+        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        if(selectedCity) {
+                let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
+                console.log(url);
+                fetch(url)
+                .then(response => response.json())
+                .then(json => {
+                                console.log(json);
+                                setCurrentWeather(json);
+                            });
+            }
     }
 
     const handleGetLocation = () => {
@@ -179,13 +203,17 @@ const HomeScreen = () => {
                     <WeatherItem item={selectedCity}/>
                 </View>    
                 <CityList />
-                <Button
+                {/* <Button
                     title='Get weather'
                     onPress={handleGetWeather} 
                 />
                 <Button
                     title='Get Location'
                     onPress={handleGetLocation} 
+                /> */}
+                <Button
+                    title='Get Local Weather'
+                    onPress={handleGetLocalWeather} 
                 />
                 <Text
                     style={{fontWeight: 'bold'}}

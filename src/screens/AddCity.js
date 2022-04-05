@@ -4,13 +4,20 @@ import {
   TextInput,
   Button,
   View,
-  FlatList
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
+import { useMyCityListStore } from "../store";
+
 
 const AddCity = () => {
   const baseUrl = "http://api.openweathermap.org/geo/1.0/direct";
   const APIKey = "d4041d05e889df96025b49745e6711b9";
   let city = "Tiraspol";
+  const myCityList = useMyCityListStore (state => state.myCityList);
+  const setMyCityList = useMyCityListStore (state => state.setMyCityList);
+  const addCity = useMyCityListStore (state => state.addCity);
+
   const [inputText, setInputText] = useState("");
   const [searchedCityList, setSearchedCityList] = useState([{name: "no_name", country: "no_country"}]);
 
@@ -26,8 +33,19 @@ const AddCity = () => {
                         setSearchedCityList(json);
                     });
   }
-  // const onChangeText = ()
+
+  const handleSelectCity = (item) => {
+    console.log("Select city:", item.name);
+    console.log("Add city:", item.name);
+    myCityList.push(item);
+    // addCity(item);
+    setMyCityList(myCityList);
+    console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
+  }
   const renderSearchedCityList = ({item}) => 
+  <TouchableOpacity
+        onPress={() => handleSelectCity(item)}
+  >
     <View
       style={{
         // flex: 1,
@@ -40,10 +58,12 @@ const AddCity = () => {
         margin: 5,
       }}
     >
-      <Text>
-      {item? item.name : ""}, {item? item.country : ""}
-      </Text>
-    </View>
+      
+        <Text>
+          {item? item.name : ""}, {item? item.country : ""}
+        </Text>
+      </View>
+    </TouchableOpacity>
     
     return (
             <View>

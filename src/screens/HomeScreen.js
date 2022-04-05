@@ -9,11 +9,37 @@ import CityList from '../components/CityList';
 import NavBar from '../components/NavBar';
 import WeatherList from '../components/WeatherList';
 import Geolocation from '@react-native-community/geolocation';
+import { useSelectedCityStore, useCurrentWeatherStore } from '../store';
 
+
+const WeatherItem = ({item}) => {
+    const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+    return (
+        <View
+            style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'space-between',
+                borderWidth: 1,
+                borderRadius: 20,
+                borderColor: 'pink',
+                padding: 5,
+                margin: 10,
+            }}
+        >
+            <Text>
+                {item? JSON.stringify(currentWeather) : "no weather"}
+            </Text>
+        </View>
+    );
+};
 
 const HomeScreen = () => {
     const [myLocation, setMyLocation] = useState({latitude: null, longitude: null });
     const [myCity, setMyCity] = useState({name: "", country: ""});
+    // const [currentWeather, setCurrentWeather] = useState();
+    const currentWeather = useCurrentWeatherStore(state => currentWeather);
+    const selectedCity = useSelectedCityStore(state => state.selectedCity);
     // const [myLocation, setMyLocation] = useState();
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
@@ -33,36 +59,62 @@ const HomeScreen = () => {
             );
     }, []);
     // const [myLocation, setMyLocation] = useState({lat: null, lon: null, });
-    const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
     // const lat = 50;
     // const lon = 30;
-    const city = "Tiraspol";
-    let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
+    // const city = "Tiraspol";
     
 
     const handleGetWeather = () => {
-        console.log(url);
-        fetch(url)
-        .then(response => response.json())
-        .then(json => {
-                        console.log(json);
-                    });
+        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        if(myCity) {
+            let url = baseUrl + "?q=" + selectedCity.name + "&appid=" + APIKey;
+            console.log(url);
+            fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                            console.log(json);
+                            setCurrentWeather(json);
+                        });
+        }
+        
     }
 
     const handleGetLocation = () => {
-        const baseUrl = "http://api.openweathermap.org/geo/1.0/reverse";
-        // const lat = 50;
-        // const lon = 30;
-        const city = "Tiraspol";
-        let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
-        console.log(url);
-        fetch(url)
-        .then(response => response.json())
-        .then(json => {
-                        console.log(json);
-                        // console.log("item [0]", json[0].name);
-                        setMyCity(json[0]);
-                    });
+        const config = {
+            enableHighAccuracy: true,
+            timeout: 2000,
+            maximumAge: 3600000,
+          };
+        Geolocation.getCurrentPosition(
+            info => {
+                console.log("INFO", info);
+                setMyLocation(info.coords);
+            },
+            error => console.log("ERROR", error),
+            config
+            );
+
+        if(myLocation.coords) {
+            const baseUrl = "http://api.openweathermap.org/geo/1.0/reverse";
+            const city = "Tiraspol";
+            let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
+            console.log(url);
+            fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                            console.log(json);
+                            if(json[0]) {
+                                console.log(`${json[0].name}, ${json[0].country}`);
+                                setMyCity(json[0]);
+                            }
+                            // setMyCity(json[0]);
+                        })
+            .catch(error => {
+                console.log("ERROR Get my location",error);
+                setMyCity({name: null, country: null});
+            });
+        }
+        
     }
 
     return (
@@ -71,7 +123,21 @@ const HomeScreen = () => {
                     Home Screen
                 </Text>
                 <NavBar />
-                <WeatherList />    
+                <WeatherList />
+                <View
+                    style={{
+                        // flex: 1,
+                        justifyContent: 'center',
+                        // alignItems: 'center',
+                        alignContent: 'center',
+                        borderWidth: 1,
+                        borderColor: 'red',
+                        flexDirection: 'row',
+                        padding: 10,
+                    }}
+                >
+                    <WeatherItem item={selectedCity}/>
+                </View>    
                 <CityList />
                 <Button
                     title='Get weather'
@@ -81,6 +147,16 @@ const HomeScreen = () => {
                     title='Get Location'
                     onPress={handleGetLocation} 
                 />
+                <Text
+                    style={{fontWeight: 'bold'}}
+                >
+                    In {myCity.name}, {myCity.country}
+                </Text>
+                <Text
+                    style={{color: 'green'}}
+                >
+                    Weather {JSON.stringify(currentWeather)}
+                </Text>
                 <Text>
                     My location (lat={myLocation.latitude}, lon={myLocation.longitude})
                 </Text>

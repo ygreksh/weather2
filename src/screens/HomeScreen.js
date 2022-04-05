@@ -76,6 +76,10 @@ const HomeScreen = () => {
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useEffect(() => {
+        // console.log("myCityList useEffect now:", myCityList.map(item => item.name + ", " + item.country));
+    }, [selectedCity]);
+
+    useEffect(() => {
         const config = {
             enableHighAccuracy: true,
             timeout: 2000,
@@ -159,7 +163,7 @@ const HomeScreen = () => {
                     Home Screen
                 </Text>
                 <NavBar />
-                <WeatherList />
+                {/* <WeatherList /> */}
                 <View
                     style={{
                         // flex: 1,

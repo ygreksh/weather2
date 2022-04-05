@@ -38,15 +38,16 @@ const WeatherItem = ({item}) => {
             </Text>
             <Image 
                 style={{
+                    backgroundColor: 'pink',
                     width: 160,
                     height: 160,
                 }}
                 source={{
-                    uri: "http://openweathermap.org/img/wn/10d@4x.png"
+                    uri: "http://openweathermap.org/img/wn/" + currentWeather.weather[0].icon + "@4x.png"
                 }}
             />
             {/* <Text>
-                {item && currentWeather.weather? JSON.stringify(currentWeather.weather) : "no weather"}
+                Icon: {currentWeather.weather[0].icon}
             </Text> */}
             <Text>
                 Main: {currentWeather.weather[0].main}

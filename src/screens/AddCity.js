@@ -10,11 +10,13 @@ import {
 const AddCity = () => {
   const baseUrl = "http://api.openweathermap.org/geo/1.0/direct";
   const APIKey = "d4041d05e889df96025b49745e6711b9";
-  const city = "Tiraspol";
+  let city = "Tiraspol";
+  const [inputText, setInputText] = useState("");
   const [searchedCityList, setSearchedCityList] = useState([{name: "no_name", country: "no_country"}]);
 
 
   const handleCitySearch = () => {
+    city=inputText;
     let url = baseUrl + "?q=" + city + "&limit=5" + "&appid=" + APIKey;
     console.log(url);
         fetch(url)
@@ -24,6 +26,7 @@ const AddCity = () => {
                         setSearchedCityList(json);
                     });
   }
+  // const onChangeText = ()
   const renderSearchedCityList = ({item}) => 
     <View
       style={{
@@ -52,6 +55,8 @@ const AddCity = () => {
                     style={{
                       borderWidth: 1,
                     }}
+                    value={inputText}
+                    onChangeText={setInputText}
                   />
                   <Button 
                     title='Search'

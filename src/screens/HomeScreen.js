@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Text,
   Button,
-  View
+  View,
+  Image,
 } from 'react-native';
 import CityList from '../components/CityList';
 import NavBar from '../components/NavBar';
@@ -14,6 +15,7 @@ import { useSelectedCityStore, useCurrentWeatherStore } from '../store';
 
 const WeatherItem = ({item}) => {
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+    const selectedCity = useSelectedCityStore(state => state.selectedCity);
     return (
         <View
             style={{
@@ -27,8 +29,36 @@ const WeatherItem = ({item}) => {
                 margin: 10,
             }}
         >
+            <Text
+                style={{
+                    fontSize: 30
+                }}
+            >
+                {selectedCity.name}
+            </Text>
+            <Image 
+                style={{
+                    width: 160,
+                    height: 160,
+                }}
+                source={{
+                    uri: "http://openweathermap.org/img/wn/10d@4x.png"
+                }}
+            />
+            {/* <Text>
+                {item && currentWeather.weather? JSON.stringify(currentWeather.weather) : "no weather"}
+            </Text> */}
             <Text>
-                {item? JSON.stringify(currentWeather) : "no weather"}
+                Main: {currentWeather.weather[0].main}
+            </Text>
+            <Text>
+                Decsr.: {currentWeather.weather[0].description}
+            </Text>
+            <Text>
+                Temp: {Math.round(currentWeather.main.temp-273)}
+            </Text>
+            <Text>
+                Wind: deg={currentWeather.wind.deg}, speed={currentWeather.wind.speed}
             </Text>
         </View>
     );
@@ -39,6 +69,7 @@ const HomeScreen = () => {
     const [myCity, setMyCity] = useState({name: "", country: ""});
     // const [currentWeather, setCurrentWeather] = useState();
     const currentWeather = useCurrentWeatherStore(state => currentWeather);
+    const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
     // const [myLocation, setMyLocation] = useState();
     const APIKey = "d4041d05e889df96025b49745e6711b9";
@@ -66,7 +97,7 @@ const HomeScreen = () => {
 
     const handleGetWeather = () => {
         const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        if(myCity) {
+        if(selectedCity) {
             let url = baseUrl + "?q=" + selectedCity.name + "&appid=" + APIKey;
             console.log(url);
             fetch(url)
@@ -77,6 +108,10 @@ const HomeScreen = () => {
                         });
         }
         
+    }
+
+    const handleGetLocalWeather = () => {
+
     }
 
     const handleGetLocation = () => {

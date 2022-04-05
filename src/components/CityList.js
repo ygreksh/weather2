@@ -29,16 +29,17 @@ const CityList = () => {
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
 
     if(myCityList.length > 0) {
-        console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
+        // console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
     } else {
         console.log("myCityList is empty");
     }
 
     useEffect(() => {
-        console.log("myCityList useEffect now:", myCityList.map(item => item.name + ", " + item.country));
+        // console.log("myCityList useEffect now:", myCityList.map(item => item.name + ", " + item.country));
     });
     const handleSelectCity = (item) => {
         console.log("Weather for city:", item.name);
+        console.log(JSON.stringify(item));
         setSelectedCity(item);
         // console.log("Now selected city:", selectedCity.name);
         getWeather(item);

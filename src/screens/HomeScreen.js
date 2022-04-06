@@ -17,6 +17,7 @@ const WeatherItem = ({item}) => {
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
     return (
+        currentWeather ?
         <View
             style={{
                 justifyContent: 'center',
@@ -61,7 +62,7 @@ const WeatherItem = ({item}) => {
             <Text>
                 Wind: deg={currentWeather.wind.deg}, speed={currentWeather.wind.speed}
             </Text>
-        </View>
+        </View> : <Text> Loading... </Text>
     );
 };
 
@@ -76,7 +77,7 @@ const HomeScreen = () => {
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useEffect(() => {
-        // console.log("myCityList useEffect now:", myCityList.map(item => item.name + ", " + item.country));
+        
     }, [currentWeather]);
 
     useEffect(() => {

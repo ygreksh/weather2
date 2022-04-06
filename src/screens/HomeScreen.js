@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from 'react';
-// import {}
-import {
-  Text,
-  Button,
-  View,
-  Image,
-  Alert,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, Button, View, Image, Alert} from 'react-native';
 import CityList from '../components/CityList';
 import NavBar from '../components/NavBar';
 import WeatherList from '../components/WeatherList';
 import Geolocation from '@react-native-community/geolocation';
-import { useSelectedCityStore, useCurrentWeatherStore } from '../store';
+import {useSelectedCityStore, useCurrentWeatherStore} from '../store';
 
 
 const WeatherItem = ({item}) => {
-    const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
-    const selectedCity = useSelectedCityStore(state => state.selectedCity);
-    return (
-        currentWeather ?
-        <View
+  const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+  return currentWeather ? (
+    <View
             style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -90,7 +81,7 @@ const HomeScreen = () => {
         Geolocation.getCurrentPosition(
             info => {
                 console.log("INFO", info);
-                setMyLocation(info.coords);
+        setMyLocation(info.coords);
             },
             error => {
                         console.log("ERROR", error);

@@ -5,6 +5,7 @@ import {
   Button,
   View,
   Image,
+  Alert,
 } from 'react-native';
 import CityList from '../components/CityList';
 import NavBar from '../components/NavBar';
@@ -77,7 +78,7 @@ const HomeScreen = () => {
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useEffect(() => {
-        
+
     }, [currentWeather]);
 
     useEffect(() => {
@@ -91,7 +92,10 @@ const HomeScreen = () => {
                 console.log("INFO", info);
                 setMyLocation(info.coords);
             },
-            error => console.log("ERROR", error),
+            error => {
+                        console.log("ERROR", error);
+                        Alert.alert("No data, turn on GPS");
+                    },
             config
             );
     }, []);

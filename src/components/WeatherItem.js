@@ -6,6 +6,12 @@ import {useSelectedCityStore, useCurrentWeatherStore} from '../store';
 
 const WeatherItem = () => {
   const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+  console.log("WeatherItem currentWeather", JSON.stringify(currentWeather));
+
+  useEffect(() => {
+    console.log("WeatherItem useEffect currentWeather", JSON.stringify(currentWeather));
+  },[]);
+  
   return (
     currentWeather ? 
     <View

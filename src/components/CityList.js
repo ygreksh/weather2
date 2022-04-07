@@ -31,7 +31,7 @@ const CityList = () => {
     if(myCityList.length > 0) {
         // console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
     } else {
-        console.log("myCityList is empty");
+        // console.log("myCityList is empty");
     }
  
     useEffect(() => {

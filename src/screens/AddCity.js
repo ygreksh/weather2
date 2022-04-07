@@ -40,7 +40,7 @@ const AddCity = () => {
     myCityList.push(item);
     // addCity(item);
     setMyCityList(myCityList);
-    console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
+    // console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
   }
   const renderSearchedCityList = ({item}) => 
   <TouchableOpacity

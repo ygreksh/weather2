@@ -5,10 +5,12 @@ import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore} from '../store';
 
 const HomeScreen = () => {
+    // const [myLocation, setMyLocation] = useState();
     const myLocation = useMyLocationStore(state => state.myLocation);
+    const setMyLocation = useMyLocationStore(state => state.setMyLocation);
     const myCity = useMyCityStore(state => state.myCity);
     const setMyCity = useMyCityStore(state => state.setMyCity);
-    const setMyLocation = useMyLocationStore(state => state.setMyLocation);
+    // const [currentWeather, setCurrentWeather] = useState();
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
@@ -18,8 +20,8 @@ const HomeScreen = () => {
         // handleGetLocalWeather();
         getLocation();
         getGPSWeather(myLocation);
-        console.log("First load: myLocation", JSON.stringify(myLocation));
-        console.log("First load: myCity", myCity);
+        // console.log("First load: myLocation", JSON.stringify(myLocation));
+        // console.log("First load: myCity", myCity);
     }, []);
 
     const getLocation = useCallback(() => {
@@ -51,7 +53,7 @@ const HomeScreen = () => {
                 .then(json => {
                                 console.log(json);
                                 setCurrentWeather(json);
-                                // setMyCity({name: json.name})
+                                setMyCity({name: json.name})
                             });
         }
         

@@ -1,26 +1,28 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
 import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
-import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore} from '../store';
+import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore} from '../store';
 
 const HomeScreen = () => {
-    // const [myLocation, setMyLocation] = useState({latitude: null, longitude: null });
     const myLocation = useMyLocationStore(state => state.myLocation);
+    const myCity = useMyCityStore(state => state.myCity);
+    const setMyCity = useMyCityStore(state => state.setMyCity);
     const setMyLocation = useMyLocationStore(state => state.setMyLocation);
-    const [myCity, setMyCity] = useState({name: "", country: ""});
-    // const [currentWeather, setCurrentWeather] = useState();
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
-    // const [myLocation, setMyLocation] = useState();
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useEffect(() => {
-        handleGetLocalWeather();
+        // handleGetLocalWeather();
+        getLocation();
+        getGPSWeather(myLocation);
+        console.log("First load: myLocation", JSON.stringify(myLocation));
+        console.log("First load: myCity", myCity);
     }, []);
 
-    useEffect(() => {
+    const getLocation = useCallback(() => {
         const config = {
             enableHighAccuracy: true,
             timeout: 2000,
@@ -37,98 +39,80 @@ const HomeScreen = () => {
                     },
             config
             );
-    }, []);
-    // const [myLocation, setMyLocation] = useState({lat: null, lon: null, });
-    // const lat = 50;
-    // const lon = 30;
-    // const city = "Tiraspol";
-    
+    });
 
-    // const handleGetWeather = () => {
-    //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-    //     if(selectedCity) {
-    //         let url = baseUrl + "?q=" + selectedCity.name + "&appid=" + APIKey;
-    //         console.log(url);
-    //         fetch(url)
-    //         .then(response => response.json())
-    //         .then(json => {
-    //                         console.log(json);
-    //                         setCurrentWeather(json);
-    //                     });
-    //     }
-        
-    // }
-
-    const handleGetLocalWeather = () => {
-        // if(!myLocation) {
-            const config = {
-                enableHighAccuracy: true,
-                timeout: 2000,
-                maximumAge: 3600000,
-              };
-            Geolocation.getCurrentPosition(
-                info => {
-                    console.log("INFO", info);
-                    setMyLocation(info.coords);
-                },
-                error => console.log("ERROR", error),
-                config
-                );
-        // }
-        if (currentWeather && myLocation && myLocation.latitude) {
+    const getGPSWeather = useCallback((location) => {
+        if (location) {
             const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-            if(selectedCity) {
-                    let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
+            let url = baseUrl + "?lat=" + location.latitude + "&lon=" + location.longitude + "&appid=" + APIKey;
+            console.log(url);
+            fetch(url)
+                .then(response => response.json())
+                .then(json => {
+                                console.log(json);
+                                setCurrentWeather(json);
+                                // setMyCity({name: json.name})
+                            });
+        }
+        
+    });
+
+    const getCityWeather = (city) => {
+        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+                    let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
                     console.log(url);
                     fetch(url)
                     .then(response => response.json())
                     .then(json => {
                                     console.log(json);
                                     setCurrentWeather(json);
-                                    setMyCity({name: json.name})
+                                    // setMyCity({name: json.name})
                                 });
-                }
-        }
-        
     }
 
-    // const handleGetLocation = () => {
-    //     const config = {
-    //         enableHighAccuracy: true,
-    //         timeout: 2000,
-    //         maximumAge: 3600000,
-    //       };
-    //     Geolocation.getCurrentPosition(
-    //         info => {
-    //             console.log("INFO", info);
-    //             setMyLocation(info.coords);
-    //         },
-    //         error => console.log("ERROR", error),
-    //         config
-    //         );
+    // useEffect(() => {
+    //     function getGPSLocation() {
+    //         const config = {
+    //             enableHighAccuracy: true,
+    //             timeout: 2000,
+    //             maximumAge: 3600000,
+    //           };
+    //         Geolocation.getCurrentPosition(
+    //             info => {
+    //                 console.log("INFO", info);
+    //                 setMyLocation(info.coords);
+    //             },
+    //             error => {
+    //                         console.log("ERROR", error);
+    //                         Alert.alert("No data, turn on GPS");
+    //                     },
+    //             config
+    //             );
+    //     };
 
-    //     if(myLocation.coords) {
-    //         const baseUrl = "http://api.openweathermap.org/geo/1.0/reverse";
-    //         const city = "Tiraspol";
+    //     getGPSLocation();
+        
+
+    //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+    //     if(myLocation) {
     //         let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
     //         console.log(url);
     //         fetch(url)
-    //         .then(response => response.json())
-    //         .then(json => {
-    //                         console.log(json);
-    //                         if(json[0]) {
-    //                             console.log(`${json[0].name}, ${json[0].country}`);
-    //                             setMyCity(json[0]);
-    //                         }
-    //                         // setMyCity(json[0]);
-    //                     })
-    //         .catch(error => {
-    //             console.log("ERROR Get my location",error);
-    //             setMyCity({name: null, country: null});
-    //         });
+    //             .then(response => response.json())
+    //             .then(json => {
+    //                             console.log(json);
+    //                             setCurrentWeather(json);
+    //                             setMyCity({name: json.name})
+    //                         });
     //     }
+            
+    // }, []);
+    
+
+    const handleGetLocalWeather = () => {
+        getGPSWeather(myLocation);
         
-    // }
+    }
 
     return (
             <View>
@@ -177,9 +161,12 @@ const HomeScreen = () => {
                 <Text>
                     My location (lat={myLocation.latitude}, lon={myLocation.longitude})
                 </Text> */}
+                {myCity ? 
                 <Text>
-                    My city: {myCity.name}, {myCity.country}.
-                </Text>
+                My city: {myCity.name}, {myCity.country}.
+                </Text> : <Text> no_data </Text>
+                }
+                
             </View>
   );
 };

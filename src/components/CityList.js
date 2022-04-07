@@ -33,10 +33,11 @@ const CityList = () => {
     } else {
         console.log("myCityList is empty");
     }
-
+ 
     useEffect(() => {
-        // console.log("myCityList useEffect now:", myCityList.map(item => item.name + ", " + item.country));
-    });
+        console.log("selectedCity changed");
+    }, [selectedCity]);
+
     const handleSelectCity = (item) => {
         console.log("Weather for city:", item.name);
         console.log(JSON.stringify(item));

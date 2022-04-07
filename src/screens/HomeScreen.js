@@ -1,76 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
-import CityList from '../components/CityList';
-import NavBar from '../components/NavBar';
-import WeatherList from '../components/WeatherList';
+import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
-import {useSelectedCityStore, useCurrentWeatherStore} from '../store';
-
-
-const WeatherItem = ({item}) => {
-  const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
-  return currentWeather ? (
-    <View
-            style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignContent: 'space-between',
-                borderWidth: 1,
-                borderRadius: 20,
-                borderColor: 'pink',
-                padding: 5,
-                margin: 10,
-            }}
-        >
-            <Text
-                style={{
-                    fontSize: 30
-                }}
-            >
-                {currentWeather.name}
-            </Text>
-            <Image 
-                style={{
-                    backgroundColor: 'pink',
-                    width: 160,
-                    height: 160,
-                }}
-                source={{
-                    uri: "http://openweathermap.org/img/wn/" + currentWeather.weather[0].icon + "@4x.png"
-                }}
-            />
-            {/* <Text>
-                Icon: {currentWeather.weather[0].icon}
-            </Text> */}
-            <Text>
-                Main: {currentWeather.weather[0].main}
-            </Text>
-            <Text>
-                Decsr.: {currentWeather.weather[0].description}
-            </Text>
-            <Text>
-                Temp: {Math.round(currentWeather.main.temp-273)}
-            </Text>
-            <Text>
-                Wind: deg={currentWeather.wind.deg}, speed={currentWeather.wind.speed}
-            </Text>
-        </View> : <Text> Loading... </Text>
-    );
-};
+import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore} from '../store';
 
 const HomeScreen = () => {
-    const [myLocation, setMyLocation] = useState({latitude: null, longitude: null });
+    // const [myLocation, setMyLocation] = useState({latitude: null, longitude: null });
+    const myLocation = useMyLocationStore(state => state.myLocation);
+    const setMyLocation = useMyLocationStore(state => state.setMyLocation);
     const [myCity, setMyCity] = useState({name: "", country: ""});
     // const [currentWeather, setCurrentWeather] = useState();
-    const currentWeather = useCurrentWeatherStore(state => currentWeather);
+    const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
     // const [myLocation, setMyLocation] = useState();
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useEffect(() => {
-
-    }, [currentWeather]);
+        handleGetLocalWeather();
+    }, []);
 
     useEffect(() => {
         const config = {
@@ -81,7 +29,7 @@ const HomeScreen = () => {
         Geolocation.getCurrentPosition(
             info => {
                 console.log("INFO", info);
-        setMyLocation(info.coords);
+                setMyLocation(info.coords);
             },
             error => {
                         console.log("ERROR", error);
@@ -112,32 +60,36 @@ const HomeScreen = () => {
     // }
 
     const handleGetLocalWeather = () => {
-        const config = {
-            enableHighAccuracy: true,
-            timeout: 2000,
-            maximumAge: 3600000,
-          };
-        Geolocation.getCurrentPosition(
-            info => {
-                console.log("INFO", info);
-                setMyLocation(info.coords);
-            },
-            error => console.log("ERROR", error),
-            config
-            );
-
-        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        if(selectedCity) {
-                let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
-                console.log(url);
-                fetch(url)
-                .then(response => response.json())
-                .then(json => {
-                                console.log(json);
-                                setCurrentWeather(json);
-                                setMyCity({name: json.name})
-                            });
-            }
+        // if(!myLocation) {
+            const config = {
+                enableHighAccuracy: true,
+                timeout: 2000,
+                maximumAge: 3600000,
+              };
+            Geolocation.getCurrentPosition(
+                info => {
+                    console.log("INFO", info);
+                    setMyLocation(info.coords);
+                },
+                error => console.log("ERROR", error),
+                config
+                );
+        // }
+        if (currentWeather && myLocation && myLocation.latitude) {
+            const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+            if(selectedCity) {
+                    let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
+                    console.log(url);
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(json => {
+                                    console.log(json);
+                                    setCurrentWeather(json);
+                                    setMyCity({name: json.name})
+                                });
+                }
+        }
+        
     }
 
     // const handleGetLocation = () => {

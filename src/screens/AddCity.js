@@ -17,7 +17,7 @@ const AddCity = () => {
   let city = "Tiraspol";
   const myCityList = useMyCityListStore (state => state.myCityList);
   const setMyCityList = useMyCityListStore (state => state.setMyCityList);
-  const addCity = useMyCityListStore (state => state.addCity);
+  // const addCity = useMyCityListStore (state => state.addCity);
 
   const [inputText, setInputText] = useState("");
   const [searchedCityList, setSearchedCityList] = useState([{name: "no_name", country: "no_country"}]);

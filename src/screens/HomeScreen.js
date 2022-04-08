@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
-import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
+import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
-import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore} from '../store';
+import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
 
 const HomeScreen = ({navigation}) => {
     // const [myLocation, setMyLocation] = useState();
@@ -10,6 +10,7 @@ const HomeScreen = ({navigation}) => {
     const setMyLocation = useMyLocationStore(state => state.setMyLocation);
     const myCity = useMyCityStore(state => state.myCity);
     const setMyCity = useMyCityStore(state => state.setMyCity);
+    const myCityList = useMyCityListStore(state => state.myCityList);
     // const [currentWeather, setCurrentWeather] = useState();
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
@@ -131,9 +132,9 @@ const HomeScreen = ({navigation}) => {
 
     return (
             <View>
-                <Text>
+                {/* <Text>
                     Home Screen
-                </Text>
+                </Text> */}
                 {/* <NavBar /> */}
                 {/* <WeatherList /> */}
                 <View

@@ -41,7 +41,7 @@ const CityList = () => {
     const handleSelectCity = (item) => {
         console.log("Weather for city:", item.name);
         console.log(JSON.stringify(item));
-        setSelectedCity(item);
+        // setSelectedCity(item);
         // console.log("Now selected city:", selectedCity.name);
         getWeather(item);
     };
@@ -69,30 +69,45 @@ const CityList = () => {
     const renderCityItem = ({item}) => 
         <View
             style={{
-                flexDirection: 'row'
+                // flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                // alignContent: 'space-between',
+                alignItems: 'baseline',
+                // padding: 10,
+                margin: 5,
             }}
         >
         <TouchableOpacity
+            style={{
+                // flex: 1
+            }}
             onPress={() => handleSelectCity(item)}
         >
             <View
                 style={{
-                    // flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderWidth: 1,
+                    // flex: 3,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    // borderWidth: 1,
                     borderRadius: 10,
                     borderColor: 'red',
-                    padding: 5,
+                    backgroundColor: '#c0c0c0',
+                    padding: 10,
                     margin: 5,
                 }}
             >
                 <Text>
-                    {item.name}
+                    {item.name}, {item.country}
                 </Text>
             </View>
         </TouchableOpacity>
         <Button 
+            style={{
+                flex: 1,
+                padding: 10,
+                margin: 5,
+            }}
             title='-'
             onPress={() => handleDeleteCity(item)}
         />

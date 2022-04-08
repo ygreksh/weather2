@@ -6,6 +6,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { useMyCityListStore } from "../store";
 
@@ -38,6 +39,8 @@ const AddCity = () => {
     console.log("Select city:", item.name);
     console.log("Add city:", item.name);
     myCityList.push(item);
+    Alert.alert("Added city", item.name + ", " + item.country)
+    setInputText("");
     // addCity(item);
     setMyCityList(myCityList);
     // console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));

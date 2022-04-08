@@ -17,12 +17,17 @@ const HomeScreen = () => {
     const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useEffect(() => {
-        // handleGetLocalWeather();
         getLocation();
-        getGPSWeather(myLocation);
+        // getGPSWeather(myLocation);
         // console.log("First load: myLocation", JSON.stringify(myLocation));
         // console.log("First load: myCity", myCity);
     }, []);
+
+    useEffect(() => {
+        getGPSWeather(myLocation);
+        // console.log("First load: myLocation", JSON.stringify(myLocation));
+        // console.log("First load: myCity", myCity);
+    }, [myLocation]);
 
     const getLocation = useCallback(() => {
         const config = {

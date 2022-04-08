@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
 import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore} from '../store';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     // const [myLocation, setMyLocation] = useState();
     const myLocation = useMyLocationStore(state => state.myLocation);
     const setMyLocation = useMyLocationStore(state => state.setMyLocation);
@@ -15,6 +15,14 @@ const HomeScreen = () => {
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
     const APIKey = "d4041d05e889df96025b49745e6711b9";
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <Button onPress={() => navigation.navigate("Add City")} title="Add" />
+          ),
+        });
+      }, [navigation]);
 
     useEffect(() => {
         getLocation();
@@ -126,7 +134,7 @@ const HomeScreen = () => {
                 <Text>
                     Home Screen
                 </Text>
-                <NavBar />
+                {/* <NavBar /> */}
                 {/* <WeatherList /> */}
                 <View
                     style={{

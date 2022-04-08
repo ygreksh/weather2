@@ -58,78 +58,49 @@ const HomeScreen = ({navigation}) => {
             );
     });
 
-    const getGPSWeather = useCallback((location) => {
-        if (location) {
-            const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-            let url = baseUrl + "?lat=" + location.latitude + "&lon=" + location.longitude + "&appid=" + APIKey;
-            console.log(url);
-            fetch(url)
-                .then(response => response.json())
-                .then(json => {
-                                console.log(json);
-                                setCurrentWeather(json);
-                                setMyCity({name: json.name})
-                            });
+    const getGPSWeather = useCallback(async (location) => {
+        // if (location) {
+        //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        //     let url = baseUrl + "?lat=" + location.latitude + "&lon=" + location.longitude + "&appid=" + APIKey;
+        //     console.log(url);
+        //     fetch(url)
+        //         .then(response => response.json())
+        //         .then(json => {
+        //                         console.log(json);
+        //                         setCurrentWeather(json);
+        //                         setMyCity({name: json.name})
+        //                     });
+        // }
+        try {
+            if (location) {
+                const response = await apiService.weatherGPS(location);
+                if (!response.data.error) {
+                    // console.log("Axios response", JSON.stringify(response.data));
+                    setCurrentWeather(response.data);
+                } else {
+    
+                }
+            }            
+        } catch (error) {
+            console.log("Axios getGPSWeather ERROR");
         }
+
         
     });
 
     const getCityWeather = async (city) => {
-        // const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        //             let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
-        //             console.log(url);
-        //             fetch(url)
-        //             .then(response => response.json())
-        //             .then(json => {
-        //                             console.log(json);
-        //                             setCurrentWeather(json);
-        //                             // setMyCity({name: json.name})
-        //                         });
-        const response = await apiService.weatherCity({city});
-        if (!response.data.error) {
-            console.log("Axios response", JSON.stringify(response.data));
-            // setCurrentWeather(response.data);
+        try {
+            const response = await apiService.weatherCity({city});
+            if (!response.data.error) {
+                // console.log("Axios response", JSON.stringify(response.data));
+                setCurrentWeather(response.data);
+            } else {
+            }    
+        } catch (error) {
+            console.log("Axios getCityWeather ERROR");
         }
-    }
-
-    // useEffect(() => {
-    //     function getGPSLocation() {
-    //         const config = {
-    //             enableHighAccuracy: true,
-    //             timeout: 2000,
-    //             maximumAge: 3600000,
-    //           };
-    //         Geolocation.getCurrentPosition(
-    //             info => {
-    //                 console.log("INFO", info);
-    //                 setMyLocation(info.coords);
-    //             },
-    //             error => {
-    //                         console.log("ERROR", error);
-    //                         Alert.alert("No data, turn on GPS");
-    //                     },
-    //             config
-    //             );
-    //     };
-
-    //     getGPSLocation();
         
-
-    //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-    //     if(myLocation) {
-    //         let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
-    //         console.log(url);
-    //         fetch(url)
-    //             .then(response => response.json())
-    //             .then(json => {
-    //                             console.log(json);
-    //                             setCurrentWeather(json);
-    //                             setMyCity({name: json.name})
-    //                         });
-    //     }
-            
-    // }, []);
-    
+    }
 
     const handleGetLocalWeather = () => {
         // getGPSWeather(myLocation);

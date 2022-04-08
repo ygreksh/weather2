@@ -8,7 +8,7 @@ export const apiService = {
     },
   
     weatherGPS(params) {
-      return httpClient.get('/data/2.5/weather', params);
+      return httpClient.get('/data/2.5/weather', {lat: params.latitude, lon: params.longitude});
     },
   
     getCities(params) {

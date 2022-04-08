@@ -3,6 +3,7 @@ import {Text, Button, View, Image, Alert} from 'react-native';
 import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
+import { APIKey } from '../config';
 
 const HomeScreen = ({navigation}) => {
     // const [myLocation, setMyLocation] = useState();
@@ -15,7 +16,6 @@ const HomeScreen = ({navigation}) => {
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
-    const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -126,8 +126,8 @@ const HomeScreen = ({navigation}) => {
     
 
     const handleGetLocalWeather = () => {
-        getGPSWeather(myLocation);
-        
+        // getGPSWeather(myLocation);
+        getLocation();
     }
 
     return (

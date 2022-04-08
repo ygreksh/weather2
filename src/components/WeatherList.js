@@ -6,30 +6,6 @@ import {
   FlatList,
 } from 'react-native';
 import { WeatherItem} from '../components'
-// import { useNavigation } from '@react-navigation/native';
-
-// const WeatherItem = ({item}) => {
-    
-    
-//     return (
-//         <View
-//             style={{
-//                 justifyContent: 'center',
-//                 alignItems: 'center',
-//                 alignContent: 'space-between',
-//                 borderWidth: 1,
-//                 borderRadius: 20,
-//                 borderColor: 'pink',
-//                 padding: 5,
-//                 margin: 10,
-//             }}
-//         >
-//             <Text>
-//                 {item.name}
-//             </Text>
-//         </View>
-//     );
-// };
 
 const WeatherList = () => {
 

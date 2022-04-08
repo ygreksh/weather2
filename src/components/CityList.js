@@ -7,18 +7,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store";
+import { APIKey } from '../config';
 // import { useNavigation } from '@react-navigation/native';
 
 
 
 const CityList = () => {
-    const APIKey = "d4041d05e889df96025b49745e6711b9";
 
-    // const cityList = [
-    //                     {name: "City 1", country: "C1"},
-    //                     {name: "City 2", country: "C2"},
-    //                     {name: "City 3", country: "C3"},
-    //                 ];
     const myCityList = useMyCityListStore(state => state.myCityList);
     const setMyCityList = useMyCityListStore(state => state.setMyCityList);
     const addCity = useMyCityListStore(state => state.addCity);

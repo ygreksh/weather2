@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
@@ -7,6 +8,9 @@ import { APIKey } from '../config';
 import { apiService } from '../services/api';
 
 const HomeScreen = ({navigation}) => {
+
+    const isFocused = useIsFocused();
+    
     // const [myLocation, setMyLocation] = useState();
     const myLocation = useMyLocationStore(state => state.myLocation);
     const setMyLocation = useMyLocationStore(state => state.setMyLocation);
@@ -17,6 +21,10 @@ const HomeScreen = ({navigation}) => {
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
+
+    useEffect(() => {
+        console.log("useEffect isFocused");
+    }, [isFocused]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -59,18 +67,6 @@ const HomeScreen = ({navigation}) => {
     });
 
     const getGPSWeather = useCallback(async (location) => {
-        // if (location) {
-        //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        //     let url = baseUrl + "?lat=" + location.latitude + "&lon=" + location.longitude + "&appid=" + APIKey;
-        //     console.log(url);
-        //     fetch(url)
-        //         .then(response => response.json())
-        //         .then(json => {
-        //                         console.log(json);
-        //                         setCurrentWeather(json);
-        //                         setMyCity({name: json.name})
-        //                     });
-        // }
         try {
             if (location) {
                 const response = await apiService.weatherGPS(location);
@@ -141,23 +137,10 @@ const HomeScreen = ({navigation}) => {
                     title='Get Local Weather'
                     onPress={handleGetLocalWeather} 
                 />
-                <Button
-                    title='Get axios data'
+                {/* <Button
+                    title='Get Tiraspol weather'
                     onPress={() => getCityWeather("tiraspol")} 
-                />
-                {/* <Text
-                    style={{fontWeight: 'bold'}}
-                >
-                    In {myCity.name}, {myCity.country}
-                </Text>
-                <Text
-                    style={{color: 'green'}}
-                >
-                    Weather {JSON.stringify(currentWeather)}
-                </Text>
-                <Text>
-                    My location (lat={myLocation.latitude}, lon={myLocation.longitude})
-                </Text> */}
+                /> */}
                 {myCity ? 
                 <Text>
                 My city: {myCity.name}, {myCity.country}.

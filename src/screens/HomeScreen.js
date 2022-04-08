@@ -4,6 +4,7 @@ import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
 import { APIKey } from '../config';
+import { apiService } from '../services/api';
 
 const HomeScreen = ({navigation}) => {
     // const [myLocation, setMyLocation] = useState();
@@ -73,17 +74,22 @@ const HomeScreen = ({navigation}) => {
         
     });
 
-    const getCityWeather = (city) => {
-        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-                    let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
-                    console.log(url);
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(json => {
-                                    console.log(json);
-                                    setCurrentWeather(json);
-                                    // setMyCity({name: json.name})
-                                });
+    const getCityWeather = async (city) => {
+        // const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        //             let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
+        //             console.log(url);
+        //             fetch(url)
+        //             .then(response => response.json())
+        //             .then(json => {
+        //                             console.log(json);
+        //                             setCurrentWeather(json);
+        //                             // setMyCity({name: json.name})
+        //                         });
+        const response = await apiService.weatherCity({city});
+        if (!response.data.error) {
+            console.log("Axios response", JSON.stringify(response.data));
+            // setCurrentWeather(response.data);
+        }
     }
 
     // useEffect(() => {
@@ -163,6 +169,10 @@ const HomeScreen = ({navigation}) => {
                 <Button
                     title='Get Local Weather'
                     onPress={handleGetLocalWeather} 
+                />
+                <Button
+                    title='Get axios data'
+                    onPress={() => getCityWeather("tiraspol")} 
                 />
                 {/* <Text
                     style={{fontWeight: 'bold'}}

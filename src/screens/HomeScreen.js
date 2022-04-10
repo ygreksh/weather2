@@ -3,6 +3,8 @@ import {Text, Button, View, Image, Alert} from 'react-native';
 import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore} from '../store';
+import { APIKey } from '../config/constants';
+import { apiService } from '../services/api';
 
 const HomeScreen = ({navigation}) => {
     // const [myLocation, setMyLocation] = useState();
@@ -14,7 +16,6 @@ const HomeScreen = ({navigation}) => {
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
-    const APIKey = "d4041d05e889df96025b49745e6711b9";
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -72,56 +73,29 @@ const HomeScreen = ({navigation}) => {
         
     });
 
-    const getCityWeather = (city) => {
-        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-                    let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
-                    console.log(url);
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(json => {
-                                    console.log(json);
-                                    setCurrentWeather(json);
-                                    // setMyCity({name: json.name})
-                                });
+    const getCityWeather = async (city) => {
+        // const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        //             let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
+        //             console.log(url);
+        //             fetch(url)
+        //             .then(response => response.json())
+        //             .then(json => {
+        //                             console.log(json);
+        //                             setCurrentWeather(json);
+        //                             // setMyCity({name: json.name})
+        //                         });
+        try {
+            const response = await apiService.getCityWeather(city);
+            if(!response.data.error) {
+                console.log("apiService.getCityWeather response".response.data);
+                // setCurrentWeather(response.data);
+            }
+        } catch (error) {
+            console.log("Error apiService.getCityWeather:".error);
+        }
     }
 
-    // useEffect(() => {
-    //     function getGPSLocation() {
-    //         const config = {
-    //             enableHighAccuracy: true,
-    //             timeout: 2000,
-    //             maximumAge: 3600000,
-    //           };
-    //         Geolocation.getCurrentPosition(
-    //             info => {
-    //                 console.log("INFO", info);
-    //                 setMyLocation(info.coords);
-    //             },
-    //             error => {
-    //                         console.log("ERROR", error);
-    //                         Alert.alert("No data, turn on GPS");
-    //                     },
-    //             config
-    //             );
-    //     };
-
-    //     getGPSLocation();
-        
-
-    //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-    //     if(myLocation) {
-    //         let url = baseUrl + "?lat=" + myLocation.latitude + "&lon=" + myLocation.longitude + "&appid=" + APIKey;
-    //         console.log(url);
-    //         fetch(url)
-    //             .then(response => response.json())
-    //             .then(json => {
-    //                             console.log(json);
-    //                             setCurrentWeather(json);
-    //                             setMyCity({name: json.name})
-    //                         });
-    //     }
-            
-    // }, []);
+    
     
 
     const handleGetLocalWeather = () => {
@@ -162,6 +136,10 @@ const HomeScreen = ({navigation}) => {
                 <Button
                     title='Get Local Weather'
                     onPress={handleGetLocalWeather} 
+                />
+                <Button
+                    title='Get axios city weather'
+                    onPress={() => getCityWeather("tiraspol")} 
                 />
                 {/* <Text
                     style={{fontWeight: 'bold'}}

@@ -9,11 +9,10 @@ import {
   Alert,
 } from 'react-native';
 import { useMyCityListStore } from "../store";
-
+import { APIKey } from '../config/constants';
 
 const AddCity = () => {
   const baseUrl = "http://api.openweathermap.org/geo/1.0/direct";
-  const APIKey = "d4041d05e889df96025b49745e6711b9";
   let city = "Tiraspol";
   const myCityList = useMyCityListStore (state => state.myCityList);
   const setMyCityList = useMyCityListStore (state => state.setMyCityList);

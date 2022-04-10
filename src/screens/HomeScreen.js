@@ -2,11 +2,13 @@ import React, {useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
 import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
+import { useIsFocused } from '@react-navigation/native';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
 import { APIKey } from '../config';
 import { apiService } from '../services/api';
 
 const HomeScreen = ({navigation}) => {
+    const isFocused = useIsFocused();
     // const [myLocation, setMyLocation] = useState();
     const myLocation = useMyLocationStore(state => state.myLocation);
     const setMyLocation = useMyLocationStore(state => state.setMyLocation);
@@ -17,6 +19,10 @@ const HomeScreen = ({navigation}) => {
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
+
+    useEffect(() => {
+        
+    }, [isFocused]);
 
     useLayoutEffect(() => {
         navigation.setOptions({

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
 import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
-import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore} from '../store';
+import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
 import { APIKey } from '../config/constants';
 import { apiService } from '../services/api';
 
@@ -12,6 +12,7 @@ const HomeScreen = ({navigation}) => {
     const setMyLocation = useMyLocationStore(state => state.setMyLocation);
     const myCity = useMyCityStore(state => state.myCity);
     const setMyCity = useMyCityStore(state => state.setMyCity);
+    const myCityList = useMyCityListStore(state => state.myCityList);
     // const [currentWeather, setCurrentWeather] = useState();
     const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
@@ -57,38 +58,39 @@ const HomeScreen = ({navigation}) => {
             );
     });
 
-    const getGPSWeather = useCallback((location) => {
-        if (location) {
-            const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-            let url = baseUrl + "?lat=" + location.latitude + "&lon=" + location.longitude + "&appid=" + APIKey;
-            console.log(url);
-            fetch(url)
-                .then(response => response.json())
-                .then(json => {
-                                console.log(json);
-                                setCurrentWeather(json);
-                                setMyCity({name: json.name})
-                            });
+    const getGPSWeather = useCallback(async (location) => {
+        // if (location) {
+        //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+        //     let url = baseUrl + "?lat=" + location.latitude + "&lon=" + location.longitude + "&appid=" + APIKey;
+        //     console.log(url);
+        //     fetch(url)
+        //         .then(response => response.json())
+        //         .then(json => {
+        //                         console.log(json);
+        //                         setCurrentWeather(json);
+        //                         setMyCity({name: json.name})
+        //                     });
+        // }
+        try {
+            const response = await apiService.getGPSWeather(location);
+            if(!response.data.error) {
+                console.log("apiService.getCityWeather response".response.data);
+                setCurrentWeather(response.data);
+                setMyCity({name: response.data.name});
+            }
+        } catch (error) {
+            console.log("Error apiService.getCityWeather:".error);
         }
+        console.log("myCityList", JSON.stringify(myCityList.map(city => city.name + " (" + city.country + ")")))
         
     });
 
     const getCityWeather = async (city) => {
-        // const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        //             let url = baseUrl + "?q=" + city + "&appid=" + APIKey;
-        //             console.log(url);
-        //             fetch(url)
-        //             .then(response => response.json())
-        //             .then(json => {
-        //                             console.log(json);
-        //                             setCurrentWeather(json);
-        //                             // setMyCity({name: json.name})
-        //                         });
         try {
             const response = await apiService.getCityWeather(city);
             if(!response.data.error) {
                 console.log("apiService.getCityWeather response".response.data);
-                // setCurrentWeather(response.data);
+                setCurrentWeather(response.data);
             }
         } catch (error) {
             console.log("Error apiService.getCityWeather:".error);

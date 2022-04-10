@@ -9,7 +9,8 @@ import {
   Alert,
 } from 'react-native';
 import { useMyCityListStore } from "../store";
-import { APIKey } from '../config/constants';
+import { APIKey } from '../config';
+
 
 const AddCity = () => {
   const baseUrl = "http://api.openweathermap.org/geo/1.0/direct";

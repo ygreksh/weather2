@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
-import { CityList, NavBar, WeatherItem, WeatherList } from '../components';
+import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
-import { APIKey } from '../config/constants';
+import { APIKey } from '../config';
 import { apiService } from '../services/api';
 
 const HomeScreen = ({navigation}) => {
@@ -72,44 +72,46 @@ const HomeScreen = ({navigation}) => {
         //                     });
         // }
         try {
-            const response = await apiService.getGPSWeather(location);
-            if(!response.data.error) {
-                console.log("apiService.getCityWeather response".response.data);
-                setCurrentWeather(response.data);
-                setMyCity({name: response.data.name});
-            }
+            if (location) {
+                const response = await apiService.weatherGPS(location);
+                if (!response.data.error) {
+                    // console.log("Axios response", JSON.stringify(response.data));
+                    setCurrentWeather(response.data);
+                } else {
+    
+                }
+            }            
         } catch (error) {
-            console.log("Error apiService.getCityWeather:".error);
+            console.log("Axios getGPSWeather ERROR");
         }
-        console.log("myCityList", JSON.stringify(myCityList.map(city => city.name + " (" + city.country + ")")))
+
         
     });
 
     const getCityWeather = async (city) => {
         try {
-            const response = await apiService.getCityWeather(city);
-            if(!response.data.error) {
-                console.log("apiService.getCityWeather response".response.data);
+            const response = await apiService.weatherCity({city});
+            if (!response.data.error) {
+                // console.log("Axios response", JSON.stringify(response.data));
                 setCurrentWeather(response.data);
-            }
+            } else {
+            }    
         } catch (error) {
-            console.log("Error apiService.getCityWeather:".error);
+            console.log("Axios getCityWeather ERROR");
         }
+        
     }
 
-    
-    
-
     const handleGetLocalWeather = () => {
-        getGPSWeather(myLocation);
-        
+        // getGPSWeather(myLocation);
+        getLocation();
     }
 
     return (
             <View>
-                <Text>
+                {/* <Text>
                     Home Screen
-                </Text>
+                </Text> */}
                 {/* <NavBar /> */}
                 {/* <WeatherList /> */}
                 <View
@@ -140,7 +142,7 @@ const HomeScreen = ({navigation}) => {
                     onPress={handleGetLocalWeather} 
                 />
                 <Button
-                    title='Get axios city weather'
+                    title='Get axios data'
                     onPress={() => getCityWeather("tiraspol")} 
                 />
                 {/* <Text

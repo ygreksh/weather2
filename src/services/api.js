@@ -1,18 +1,22 @@
 import { httpClient } from "./httpClient";
 
 export const apiService = {
-    getCityWeather(city) {
-        return httpClient.get('/data/2.5/weather', {q: city});
+    weatherCity({ city }) {
+      return httpClient.get('/data/2.5/weather', {
+        q: city,
+      });
+    },
+  
+    weatherGPS(params) {
+      return httpClient.get('/data/2.5/weather', {lat: params.latitude, lon: params.longitude});
+    },
+  
+    getCities(params) {
+      return httpClient.get('/geo/1.0/direct', params);
     },
 
-    getGPSWeather(location) {
-        return httpClient.get('/data/2.5/weather', {lat: location.latitude, lon: location.longitude});
-    },
-
-    getSearchCity(city) {
-        return httpClient.get('/geo/1.0/direct', params);
-    },
-    getIconWeather(params) {
-        return httpClient.get('/img/wn/', params);
-    },
-}
+    getIcon(params) {
+        return httpClient.get('/img/wn', params);
+      },
+  };
+  

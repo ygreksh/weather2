@@ -7,18 +7,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store";
+import { APIKey } from '../config';
 // import { useNavigation } from '@react-navigation/native';
 
 
 
 const CityList = () => {
-    const APIKey = "d4041d05e889df96025b49745e6711b9";
 
-    // const cityList = [
-    //                     {name: "City 1", country: "C1"},
-    //                     {name: "City 2", country: "C2"},
-    //                     {name: "City 3", country: "C3"},
-    //                 ];
     const myCityList = useMyCityListStore(state => state.myCityList);
     const setMyCityList = useMyCityListStore(state => state.setMyCityList);
     const addCity = useMyCityListStore(state => state.addCity);
@@ -41,7 +36,7 @@ const CityList = () => {
     const handleSelectCity = (item) => {
         console.log("Weather for city:", item.name);
         console.log(JSON.stringify(item));
-        setSelectedCity(item);
+        // setSelectedCity(item);
         // console.log("Now selected city:", selectedCity.name);
         getWeather(item);
     };
@@ -69,30 +64,45 @@ const CityList = () => {
     const renderCityItem = ({item}) => 
         <View
             style={{
-                flexDirection: 'row'
+                // flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                // alignContent: 'space-between',
+                alignItems: 'baseline',
+                // padding: 10,
+                margin: 5,
             }}
         >
         <TouchableOpacity
+            style={{
+                // flex: 1
+            }}
             onPress={() => handleSelectCity(item)}
         >
             <View
                 style={{
-                    // flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderWidth: 1,
+                    // flex: 3,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    // borderWidth: 1,
                     borderRadius: 10,
                     borderColor: 'red',
-                    padding: 5,
+                    backgroundColor: '#c0c0c0',
+                    padding: 10,
                     margin: 5,
                 }}
             >
                 <Text>
-                    {item.name}
+                    {item.name}, {item.country}
                 </Text>
             </View>
         </TouchableOpacity>
         <Button 
+            style={{
+                flex: 1,
+                padding: 10,
+                margin: 5,
+            }}
             title='-'
             onPress={() => handleDeleteCity(item)}
         />

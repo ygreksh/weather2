@@ -7,7 +7,7 @@ import { httpClient } from "../../services/httpClient";
 const initialState = {
     loading: false,
     myCity: null,
-    myLocation: null,
+    myLocation: {latitude: 50, longitude: 30},
     currentWeather: null,
     selectedCity: null,
     myCityList: [],
@@ -25,8 +25,8 @@ const weatherSlice = createSlice ({
             state.myCity = action.payload;
         },
 
-        setMyLocation(state, action) {
-            state.myLocation = action.payload;
+        setMyLocation(state, {payload}) {
+            state.myLocation = payload;
         },
 
         setCurrentWeather(state, action) {
@@ -73,7 +73,8 @@ export const getMyLocation = createAsyncThunk(
         Geolocation.getCurrentPosition(
             info => {
                 console.log("INFO", info);
-                setMyLocation(info.coords);
+                // setMyLocation(info.coords);
+                dispatch(setMyLocation(info.coords));
             },
             error => {
                 console.log("ERROR", error);

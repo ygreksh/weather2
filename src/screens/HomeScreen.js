@@ -27,7 +27,8 @@ const HomeScreen = ({navigation}) => {
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
 
     useEffect(() => {
-        dispatch(getMyLocation);
+        dispatch(getMyLocation());
+        console.log("First load: getMyLocation", myLocation);
         // getLocation();
         // getGPSWeather(myLocation);
         // console.log("First load: myLocation", JSON.stringify(myLocation));

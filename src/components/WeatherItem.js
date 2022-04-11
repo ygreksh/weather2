@@ -13,7 +13,7 @@ const WeatherItem = () => {
   },[]);
   
   return (
-    currentWeather ? 
+    currentWeather && currentWeather.weather ? 
     <View
             style={{
                 justifyContent: 'center',

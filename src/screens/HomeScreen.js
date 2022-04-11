@@ -3,8 +3,8 @@ import {Text, Button, View, Image, Alert} from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
+import { useIsFocused } from '@react-navigation/native';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store';
-import { APIKey } from '../config';
 import { apiService } from '../services/api';
 
 const HomeScreen = ({navigation}) => {

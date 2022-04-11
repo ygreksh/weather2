@@ -21,7 +21,8 @@ const WeatherItem = () => {
                 alignContent: 'space-between',
                 borderWidth: 1,
                 borderRadius: 20,
-                borderColor: 'pink',
+                borderColor: '#dddddd',
+                backgroundColor: '#dddddd',
                 padding: 5,
                 margin: 10,
             }}
@@ -35,7 +36,7 @@ const WeatherItem = () => {
             </Text>
             <Image 
                 style={{
-                    backgroundColor: 'pink',
+                    backgroundColor: '#dddddd',
                     width: 160,
                     height: 160,
                 }}

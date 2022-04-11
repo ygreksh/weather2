@@ -72,6 +72,8 @@ const HomeScreen = ({navigation}) => {
                 if (!response.data.error) {
                     // console.log("Axios response", JSON.stringify(response.data));
                     setCurrentWeather(response.data);
+                    // console.log("getGPSWeather city name:", response.data.name);
+                    setMyCity({name: response.data.name, country: response.data.sys.country});
                 } else {
     
                 }
@@ -104,11 +106,6 @@ const HomeScreen = ({navigation}) => {
 
     return (
             <View>
-                {/* <Text>
-                    Home Screen
-                </Text> */}
-                {/* <NavBar /> */}
-                {/* <WeatherList /> */}
                 <View
                     style={{
                         // flex: 1,
@@ -124,14 +121,6 @@ const HomeScreen = ({navigation}) => {
                     <WeatherItem item={selectedCity}/>
                 </View>    
                 <CityList />
-                {/* <Button
-                    title='Get weather'
-                    onPress={handleGetWeather} 
-                />
-                <Button
-                    title='Get Location'
-                    onPress={handleGetLocation} 
-                /> */}
                 <Button
                     title='Get Local Weather'
                     onPress={handleGetLocalWeather} 

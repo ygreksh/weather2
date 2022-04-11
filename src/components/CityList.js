@@ -6,7 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store";
+import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store/zustand";
 import { APIKey } from '../config';
 // import { useNavigation } from '@react-navigation/native';
 

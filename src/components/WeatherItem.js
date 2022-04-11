@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
-import {useSelectedCityStore, useCurrentWeatherStore} from '../store';
+// import Geolocation from '@react-native-community/geolocation';
+import {useSelectedCityStore, useCurrentWeatherStore} from '../store/zustand';
 
 
 const WeatherItem = () => {

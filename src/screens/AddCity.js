@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useMyCityListStore } from "../store";
+import { useMyCityListStore } from '../store/zustand';
 import { APIKey } from '../config';
 
 

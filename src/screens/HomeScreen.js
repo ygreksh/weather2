@@ -5,23 +5,36 @@ import { CityList, WeatherItem, WeatherList } from '../components';
 import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store/zustand';
 import { apiService } from '../services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMyLocation, selectMyLocation } from '../store/redux/weatherSlice';
 
 const HomeScreen = ({navigation}) => {
+    const dispatch = useDispatch();
+    const myLocation = useSelector(selectMyLocation);
+    const loading = useSelector(state => state.weather.loading);
 
     const isFocused = useIsFocused();
     
     // const [myLocation, setMyLocation] = useState();
-    const myLocation = useMyLocationStore(state => state.myLocation);
-    const setMyLocation = useMyLocationStore(state => state.setMyLocation);
+    // const myLocation = useMyLocationStore(state => state.myLocation);
+    // const setMyLocation = useMyLocationStore(state => state.setMyLocation);
     const myCity = useMyCityStore(state => state.myCity);
     const setMyCity = useMyCityStore(state => state.setMyCity);
     const myCityList = useMyCityListStore(state => state.myCityList);
     // const [currentWeather, setCurrentWeather] = useState();
-    const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
-    const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
+    // const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+    // const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
 
     useEffect(() => {
+        dispatch(getMyLocation);
+        // getLocation();
+        // getGPSWeather(myLocation);
+        // console.log("First load: myLocation", JSON.stringify(myLocation));
+        // console.log("First load: myCity", myCity);
+    }, []);
+
+useEffect(() => {
         console.log("useEffect isFocused");
     }, [isFocused]);
 
@@ -33,37 +46,31 @@ const HomeScreen = ({navigation}) => {
         });
       }, [navigation]);
 
-    useEffect(() => {
-        getLocation();
-        // getGPSWeather(myLocation);
-        // console.log("First load: myLocation", JSON.stringify(myLocation));
-        // console.log("First load: myCity", myCity);
-    }, []);
-
+    
     useEffect(() => {
         getGPSWeather(myLocation);
         // console.log("First load: myLocation", JSON.stringify(myLocation));
         // console.log("First load: myCity", myCity);
     }, [myLocation]);
 
-    const getLocation = useCallback(() => {
-        const config = {
-            enableHighAccuracy: true,
-            timeout: 2000,
-            maximumAge: 3600000,
-          };
-        Geolocation.getCurrentPosition(
-            info => {
-                console.log("INFO", info);
-                setMyLocation(info.coords);
-            },
-            error => {
-                        console.log("ERROR", error);
-                        Alert.alert("No data, turn on GPS");
-                    },
-            config
-            );
-    });
+    // const getLocation = useCallback(() => {
+    //     const config = {
+    //         enableHighAccuracy: true,
+    //         timeout: 2000,
+    //         maximumAge: 3600000,
+    //       };
+    //     Geolocation.getCurrentPosition(
+    //         info => {
+    //             console.log("INFO", info);
+    //             setMyLocation(info.coords);
+    //         },
+    //         error => {
+    //                     console.log("ERROR", error);
+    //                     Alert.alert("No data, turn on GPS");
+    //                 },
+    //         config
+    //         );
+    // });
 
     const getGPSWeather = useCallback(async (location) => {
         try {
@@ -101,7 +108,7 @@ const HomeScreen = ({navigation}) => {
 
     const handleGetLocalWeather = () => {
         // getGPSWeather(myLocation);
-        getLocation();
+        getMyLocation();
     }
 
     return (

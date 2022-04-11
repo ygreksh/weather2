@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import Geolocation from '@react-native-community/geolocation';
 import { apiService } from "../../services/api";
 import { httpClient } from "../../services/httpClient";
 
@@ -53,12 +54,36 @@ export const {
     setMyCityList,
 } = weatherSlice.actions;
 
-export const selectLoading = state => state.tv.loading;
+export const selectLoading = state => state.weather.loading;
 export const selectMyCity = state => state.weather.myCity;
 export const selectMyLocation = state => state.weather.myLocation;
 export const selectCurrentWeather = state => state.weather.currentWeather;
 export const selectSelectedCity = state => state.weather.selectedCity;
 export const selectMyCityList = state => state.weather.myCityList;
+
+export const getMyLocation = createAsyncThunk(
+    'weather/getMyLocation',
+    async ({ dispatch }) => {
+        dispatch(setLoading(true));
+        const config = {
+                enableHighAccuracy: true,
+                timeout: 2000,
+                maximumAge: 3600000,
+              };
+        Geolocation.getCurrentPosition(
+            info => {
+                console.log("INFO", info);
+                setMyLocation(info.coords);
+            },
+            error => {
+                console.log("ERROR", error);
+                Alert.alert("No data, turn on GPS");
+                },
+                config
+        );
+        dispatch(setLoading(false));
+    }
+)
 
 export const getCityWeather = createAsyncThunk(
     'weather/getCityWeather',
@@ -92,4 +117,6 @@ export const getGPSWeather = createAsyncThunk(
         }
         dispatch(setLoading(false));
     }
-)
+);
+
+export default weatherSlice.reducer;

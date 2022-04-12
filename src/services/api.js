@@ -1,7 +1,7 @@
 import { httpClient } from "./httpClient";
 
 export const apiService = {
-    weatherCity({ city }) {
+    weatherCity( city ) {
       return httpClient.get('/data/2.5/weather', {
         q: city,
       });

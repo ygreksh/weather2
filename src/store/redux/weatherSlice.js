@@ -63,8 +63,9 @@ export const selectMyCityList = state => state.weather.myCityList;
 
 export const getMyLocation = createAsyncThunk(
     'weather/getMyLocation',
-    async ({ dispatch }) => {
-        dispatch(setLoading(true));
+    (requestValues, { dispatch }) => {
+        console.log("weatherSlice getMyLocation");
+        // dispatch(setLoading(true));
         const config = {
                 enableHighAccuracy: true,
                 timeout: 2000,
@@ -78,11 +79,11 @@ export const getMyLocation = createAsyncThunk(
             },
             error => {
                 console.log("ERROR", error);
-                Alert.alert("No data, turn on GPS");
+                // Alert.alert("No data, turn on GPS");
                 },
                 config
         );
-        dispatch(setLoading(false));
+        // dispatch(setLoading(false));
     }
 )
 
@@ -93,7 +94,7 @@ export const getCityWeather = createAsyncThunk(
         try {
             const response = await apiService.weatherCity(requestValues);
             if (!response.data.error) {
-                console.log("weatherSlice getCityWeather");
+                console.log("weatherSlice getCityWeather success");
                 const currentWeather = response.data;
                 dispatch(setCurrentWeather(currentWeather));
                 dispatch(setMyCity({name: response.data.name, country: response.data.sys.country}));

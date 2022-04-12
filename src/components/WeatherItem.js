@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 const WeatherItem = () => {
-//   const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+    //   const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     const currentWeather = useSelector(selectCurrentWeather);
 
-    console.log("WeatherItem currentWeather", JSON.stringify(currentWeather));
+    // console.log("WeatherItem currentWeather", JSON.stringify(currentWeather));
 
     useEffect(() => {
         console.log("WeatherItem useEffect currentWeather", JSON.stringify(currentWeather));

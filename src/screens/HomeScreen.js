@@ -6,12 +6,13 @@ import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store/zustand';
 import { apiService } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather } from '../store/redux/weatherSlice';
+import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather, selectMyCity } from '../store/redux/weatherSlice';
 
 const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
     const myLocation = useSelector(selectMyLocation);
-    const currentWeather = useSelector(selectCurrentWeather);
+    const myCity = useSelector(selectMyCity);
+    // const currentWeather = useSelector(selectCurrentWeather);
     const loading = useSelector(state => state.weather.loading);
 
     const isFocused = useIsFocused();
@@ -19,8 +20,8 @@ const HomeScreen = ({navigation}) => {
     // const [myLocation, setMyLocation] = useState();
     // const myLocation = useMyLocationStore(state => state.myLocation);
     // const setMyLocation = useMyLocationStore(state => state.setMyLocation);
-    const myCity = useMyCityStore(state => state.myCity);
-    const setMyCity = useMyCityStore(state => state.setMyCity);
+    // const myCity = useMyCityStore(state => state.myCity);
+    // const setMyCity = useMyCityStore(state => state.setMyCity);
     const myCityList = useMyCityListStore(state => state.myCityList);
     // const [currentWeather, setCurrentWeather] = useState();
     // const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
@@ -95,23 +96,23 @@ useEffect(() => {
         
     // });
 
-    const getCityWeather = async (city) => {
-        try {
-            const response = await apiService.weatherCity({city});
-            if (!response.data.error) {
-                // console.log("Axios response", JSON.stringify(response.data));
-                setCurrentWeather(response.data);
-            } else {
-            }    
-        } catch (error) {
-            console.log("Axios getCityWeather ERROR");
-        }
+    // const getCityWeather = async (city) => {
+    //     try {
+    //         const response = await apiService.weatherCity({city});
+    //         if (!response.data.error) {
+    //             // console.log("Axios response", JSON.stringify(response.data));
+    //             setCurrentWeather(response.data);
+    //         } else {
+    //         }    
+    //     } catch (error) {
+    //         console.log("Axios getCityWeather ERROR");
+    //     }
         
-    }
+    // }
 
     const handleGetLocalWeather = () => {
         // getGPSWeather(myLocation);
-        getMyLocation();
+        dispatch(getMyLocation());
     }
 
     return (

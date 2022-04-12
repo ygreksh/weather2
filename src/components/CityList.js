@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store/zustand";
+import { useDispatch, useSelector } from 'react-redux';
+import { getCityWeather, selectCurrentWeather, selectMyCity, setCurrentWeather } from '../store/redux/weatherSlice';
 import { APIKey } from '../config';
 // import { useNavigation } from '@react-navigation/native';
 
@@ -15,19 +17,22 @@ import { APIKey } from '../config';
 const CityList = () => {
 
     const myCityList = useMyCityListStore(state => state.myCityList);
-    const setMyCityList = useMyCityListStore(state => state.setMyCityList);
-    const addCity = useMyCityListStore(state => state.addCity);
+    // const setMyCityList = useMyCityListStore(state => state.setMyCityList);
+    // const addCity = useMyCityListStore(state => state.addCity);
     const subCity = useMyCityListStore(state => state.subCity);
     const selectedCity = useSelectedCityStore(state => state.selectedCity);
-    const setSelectedCity = useSelectedCityStore(state => state.setSelectedCity);
-    const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
-    const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
+    // const setSelectedCity = useSelectedCityStore(state => state.setSelectedCity);
+    // const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+    // const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
+    const dispatch = useDispatch();
+    const currentWeather = useSelector(selectCurrentWeather);
 
-    if(myCityList.length > 0) {
-        // console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
-    } else {
-        // console.log("myCityList is empty");
-    }
+
+    // if(myCityList.length > 0) {
+    //     console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
+    // } else {
+    //     console.log("myCityList is empty");
+    // }
  
     useEffect(() => {
         console.log("selectedCity changed");
@@ -38,28 +43,30 @@ const CityList = () => {
         console.log(JSON.stringify(item));
         // setSelectedCity(item);
         // console.log("Now selected city:", selectedCity.name);
-        getWeather(item);
+        // getWeather(item);
+        dispatch(getCityWeather(item.name));
     };
 
     const handleDeleteCity = (city) => {
         subCity(city);
     }
 
-    const getWeather = (city) => {
-        const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
-        if(city) {
-            let url = baseUrl + "?q=" + city.name + "&appid=" + APIKey;
-            console.log(url);
-            fetch(url)
-            .then(response => response.json())
-            .then(json => {
-                            console.log(json);
-                            setCurrentWeather(json);
-                        })
-            // .catch(error => console.log("Get weather fetch error", error));
-        }
+    // const getWeather = (city) => {
+    //     const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
+    //     if(city) {
+    //         let url = baseUrl + "?q=" + city.name + "&appid=" + APIKey;
+    //         console.log(url);
+    //         fetch(url)
+    //         .then(response => response.json())
+    //         .then(json => {
+    //                         // console.log(json);
+    //                         // setCurrentWeather(json);
+    //                         dispatch(setCurrentWeather(json));
+    //                     })
+    //         // .catch(error => console.log("Get weather fetch error", error));
+    //     }
         
-    }
+    // }
 
     const renderCityItem = ({item}) => 
         <View

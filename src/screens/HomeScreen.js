@@ -6,7 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store/zustand';
 import { apiService } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather, selectMyCity, selectSelectedCity } from '../store/redux/weatherSlice';
+import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather, selectMyCity, selectSelectedCity, selectMyCityList } from '../store/redux/weatherSlice';
 
 const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
@@ -23,7 +23,8 @@ const HomeScreen = ({navigation}) => {
     // const setMyLocation = useMyLocationStore(state => state.setMyLocation);
     // const myCity = useMyCityStore(state => state.myCity);
     // const setMyCity = useMyCityStore(state => state.setMyCity);
-    const myCityList = useMyCityListStore(state => state.myCityList);
+    // const myCityList = useMyCityListStore(state => state.myCityList);
+    const myCityList = useSelector(selectMyCityList);
     // const [currentWeather, setCurrentWeather] = useState();
     // const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     // const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);

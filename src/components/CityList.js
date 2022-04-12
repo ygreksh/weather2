@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store/zustand";
 import { useDispatch, useSelector } from 'react-redux';
-import { getCityWeather, selectCurrentWeather, selectMyCity, setCurrentWeather, setSelectedCity } from '../store/redux/weatherSlice';
+import { getCityWeather, selectCurrentWeather, selectMyCity, selectMyCityList, selectSelectedCity, setCurrentWeather, setSelectedCity } from '../store/redux/weatherSlice';
 import { APIKey } from '../config';
 // import { useNavigation } from '@react-navigation/native';
 
@@ -16,11 +16,13 @@ import { APIKey } from '../config';
 
 const CityList = () => {
 
-    const myCityList = useMyCityListStore(state => state.myCityList);
+    // const myCityList = useMyCityListStore(state => state.myCityList);
+    const myCityList = useSelector(selectMyCityList);
     // const setMyCityList = useMyCityListStore(state => state.setMyCityList);
     // const addCity = useMyCityListStore(state => state.addCity);
     const subCity = useMyCityListStore(state => state.subCity);
-    const selectedCity = useSelectedCityStore(state => state.selectedCity);
+    // const selectedCity = useSelectedCityStore(state => state.selectedCity);
+    const selectedCity = useSelector(selectSelectedCity);
     // const setSelectedCity = useSelectedCityStore(state => state.setSelectedCity);
     // const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     // const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);

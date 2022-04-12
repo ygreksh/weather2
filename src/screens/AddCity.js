@@ -9,14 +9,19 @@ import {
   Alert,
 } from 'react-native';
 import { useMyCityListStore } from '../store/zustand';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { APIKey } from '../config';
+import { selectMyCityList, setMyCityList } from '../store/redux/weatherSlice';
 
 
 const AddCity = () => {
   const baseUrl = "http://api.openweathermap.org/geo/1.0/direct";
   let city = "Tiraspol";
-  const myCityList = useMyCityListStore (state => state.myCityList);
-  const setMyCityList = useMyCityListStore (state => state.setMyCityList);
+  // const myCityList = useMyCityListStore (state => state.myCityList);
+  const myCityList = useSelector(selectMyCityList);
+  // const setMyCityList = useMyCityListStore (state => state.setMyCityList);
+  const dispatch = useDispatch();
   // const addCity = useMyCityListStore (state => state.addCity);
 
   const [inputText, setInputText] = useState("");
@@ -37,12 +42,18 @@ const AddCity = () => {
 
   const handleSelectCity = (item) => {
     console.log("Select city:", item.name);
-    console.log("Add city:", item.name);
-    myCityList.push(item);
+    console.log("myCityList", myCityList);
+    // console.log("Add city:", item.name);
+    // let tempCityList = [...myCityList];
+    // let tempCityList = myCityList.slice();
+    console.log("tempCityList", myCityList);
+
+    // tempCityList.push(item);
     Alert.alert("Added city", item.name + ", " + item.country)
     setInputText("");
     // addCity(item);
-    setMyCityList(myCityList);
+    // setMyCityList(myCityList);
+    // dispatch(setMyCityList(tempCityList));
     // console.log("myCityList:", myCityList.map(item => item.name + ", " + item.country));
   }
   const renderSearchedCityList = ({item}) => 

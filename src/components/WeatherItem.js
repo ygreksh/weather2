@@ -2,19 +2,23 @@ import React, {useState, useEffect} from 'react';
 import {Text, Button, View, Image, Alert} from 'react-native';
 // import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore} from '../store/zustand';
+import {selectCurrentWeather} from '../store/redux/weatherSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const WeatherItem = () => {
-  const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
-  console.log("WeatherItem currentWeather", JSON.stringify(currentWeather));
+//   const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
+    const currentWeather = useSelector(selectCurrentWeather);
 
-  useEffect(() => {
-    console.log("WeatherItem useEffect currentWeather", JSON.stringify(currentWeather));
-  },[]);
+    console.log("WeatherItem currentWeather", JSON.stringify(currentWeather));
+
+    useEffect(() => {
+        console.log("WeatherItem useEffect currentWeather", JSON.stringify(currentWeather));
+    },[]);
   
-  return (
-    currentWeather && currentWeather.weather ? 
-    <View
+    return (
+        currentWeather && currentWeather.weather ? 
+        <View
             style={{
                 justifyContent: 'center',
                 alignItems: 'center',

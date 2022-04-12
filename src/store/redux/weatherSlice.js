@@ -72,8 +72,8 @@ export const getMyLocation = createAsyncThunk(
               };
         Geolocation.getCurrentPosition(
             info => {
+                console.log("weatherSlice getMyLocation");
                 console.log("INFO", info);
-                // setMyLocation(info.coords);
                 dispatch(setMyLocation(info.coords));
             },
             error => {
@@ -93,8 +93,10 @@ export const getCityWeather = createAsyncThunk(
         try {
             const response = await apiService.weatherCity(requestValues);
             if (!response.data.error) {
+                console.log("weatherSlice getCityWeather");
                 const currentWeather = response.data;
                 dispatch(setCurrentWeather(currentWeather));
+                dispatch(setMyCity({name: response.data.name, country: response.data.sys.country}));
             }
         } catch (error) {
             
@@ -110,6 +112,7 @@ export const getGPSWeather = createAsyncThunk(
         try {
             const response = await apiService.weatherGPS(requestValues);
             if (!response.data.error) {
+                console.log("weatherSlice getGPSWeather success");
                 const currentWeather = response.data;
                 dispatch(setCurrentWeather(currentWeather));
             }

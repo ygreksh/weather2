@@ -6,11 +6,12 @@ import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store/zustand';
 import { apiService } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyLocation, selectMyLocation } from '../store/redux/weatherSlice';
+import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather } from '../store/redux/weatherSlice';
 
 const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
     const myLocation = useSelector(selectMyLocation);
+    const currentWeather = useSelector(selectCurrentWeather);
     const loading = useSelector(state => state.weather.loading);
 
     const isFocused = useIsFocused();
@@ -49,7 +50,8 @@ useEffect(() => {
 
     
     useEffect(() => {
-        getGPSWeather(myLocation);
+        // getGPSWeather(myLocation);
+        dispatch(getGPSWeather(myLocation));
         // console.log("First load: myLocation", JSON.stringify(myLocation));
         // console.log("First load: myCity", myCity);
     }, [myLocation]);
@@ -73,25 +75,25 @@ useEffect(() => {
     //         );
     // });
 
-    const getGPSWeather = useCallback(async (location) => {
-        try {
-            if (location) {
-                const response = await apiService.weatherGPS(location);
-                if (!response.data.error) {
-                    // console.log("Axios response", JSON.stringify(response.data));
-                    setCurrentWeather(response.data);
-                    // console.log("getGPSWeather city name:", response.data.name);
-                    setMyCity({name: response.data.name, country: response.data.sys.country});
-                } else {
+    // const getGPSWeather = useCallback(async (location) => {
+    //     try {
+    //         if (location) {
+    //             const response = await apiService.weatherGPS(location);
+    //             if (!response.data.error) {
+    //                 // console.log("Axios response", JSON.stringify(response.data));
+    //                 // setCurrentWeather(response.data);
+    //                 console.log("HomeScreen getGPSWeather city name:", response.data.name);
+    //                 setMyCity({name: response.data.name, country: response.data.sys.country});
+    //             } else {
     
-                }
-            }            
-        } catch (error) {
-            console.log("Axios getGPSWeather ERROR");
-        }
+    //             }
+    //         }            
+    //     } catch (error) {
+    //         console.log("Homescreen Axios getGPSWeather ERROR", error);
+    //     }
 
         
-    });
+    // });
 
     const getCityWeather = async (city) => {
         try {

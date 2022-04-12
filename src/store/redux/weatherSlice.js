@@ -7,7 +7,7 @@ import { httpClient } from "../../services/httpClient";
 const initialState = {
     loading: false,
     myCity: null,
-    myLocation: {latitude: 50, longitude: 30},
+    myLocation: null,
     currentWeather: null,
     selectedCity: null,
     myCityList: [],
@@ -65,7 +65,7 @@ export const getMyLocation = createAsyncThunk(
     'weather/getMyLocation',
     (requestValues, { dispatch }) => {
         console.log("weatherSlice getMyLocation");
-        // dispatch(setLoading(true));
+        dispatch(setLoading(true));
         const config = {
                 enableHighAccuracy: true,
                 timeout: 2000,
@@ -76,6 +76,7 @@ export const getMyLocation = createAsyncThunk(
                 console.log("weatherSlice getMyLocation");
                 console.log("INFO", info);
                 dispatch(setMyLocation(info.coords));
+                // dispatch(setMyCity());
             },
             error => {
                 console.log("ERROR", error);
@@ -83,7 +84,7 @@ export const getMyLocation = createAsyncThunk(
                 },
                 config
         );
-        // dispatch(setLoading(false));
+        dispatch(setLoading(false));
     }
 )
 
@@ -97,7 +98,7 @@ export const getCityWeather = createAsyncThunk(
                 console.log("weatherSlice getCityWeather success");
                 const currentWeather = response.data;
                 dispatch(setCurrentWeather(currentWeather));
-                dispatch(setMyCity({name: response.data.name, country: response.data.sys.country}));
+                // dispatch(setMyCity({name: response.data.name, country: response.data.sys.country}));
             }
         } catch (error) {
             

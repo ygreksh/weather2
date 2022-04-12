@@ -6,12 +6,13 @@ import Geolocation from '@react-native-community/geolocation';
 import {useSelectedCityStore, useCurrentWeatherStore, useMyLocationStore, useMyCityStore, useMyCityListStore} from '../store/zustand';
 import { apiService } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather, selectMyCity } from '../store/redux/weatherSlice';
+import { getMyLocation, selectCurrentWeather, selectMyLocation, getGPSWeather, selectMyCity, selectSelectedCity } from '../store/redux/weatherSlice';
 
 const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
     const myLocation = useSelector(selectMyLocation);
     const myCity = useSelector(selectMyCity);
+    const selectedCity = useSelector(selectSelectedCity);
     // const currentWeather = useSelector(selectCurrentWeather);
     const loading = useSelector(state => state.weather.loading);
 
@@ -26,7 +27,7 @@ const HomeScreen = ({navigation}) => {
     // const [currentWeather, setCurrentWeather] = useState();
     // const currentWeather = useCurrentWeatherStore(state => state.currentWeather);
     // const setCurrentWeather = useCurrentWeatherStore(state => state.setCurrentWeather);
-    const selectedCity = useSelectedCityStore(state => state.selectedCity);
+    // const selectedCity = useSelectedCityStore(state => state.selectedCity);
 
     useEffect(() => {
         dispatch(getMyLocation());
@@ -145,7 +146,11 @@ useEffect(() => {
                 My city: {myCity.name}, {myCity.country}.
                 </Text> : <Text> no_data </Text>
                 }
-                
+                {selectedCity ? 
+                <Text>
+                Selected city: {selectedCity.name}, {selectedCity.country}.
+                </Text> : <Text> no_data </Text>
+                }
             </View>
   );
 };

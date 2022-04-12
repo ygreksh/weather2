@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useMyCityListStore, useSelectedCityStore, useCurrentWeatherStore } from "../store/zustand";
 import { useDispatch, useSelector } from 'react-redux';
-import { getCityWeather, selectCurrentWeather, selectMyCity, setCurrentWeather } from '../store/redux/weatherSlice';
+import { getCityWeather, selectCurrentWeather, selectMyCity, setCurrentWeather, setSelectedCity } from '../store/redux/weatherSlice';
 import { APIKey } from '../config';
 // import { useNavigation } from '@react-navigation/native';
 
@@ -44,6 +44,7 @@ const CityList = () => {
         // setSelectedCity(item);
         // console.log("Now selected city:", selectedCity.name);
         // getWeather(item);
+        dispatch(setSelectedCity(item));
         dispatch(getCityWeather(item.name));
     };
 
